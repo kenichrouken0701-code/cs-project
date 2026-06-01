@@ -397,6 +397,10 @@ alert("分析完了！");
 
     console.log(data);
 
+    alert(
+  JSON.stringify(data, null, 2)
+);
+
     const result =
       data.candidates?.[0]?.content?.parts?.[0]?.text ||
       "分析結果取得失敗";
@@ -466,7 +470,27 @@ if (strategyMatch) {
     setIsAnalyzing(false);
   }
 };
-const deleteOtherRecord = async (id: number) => {
+const deleteRecord = async (id: string) => {
+  const ok = confirm("削除しますか？");
+
+  if (!ok) return;
+
+  const { error } = await supabase
+    .from("cool_records")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    alert(JSON.stringify(error));
+    return;
+  }
+
+  fetchRecords();
+
+  alert("削除完了");
+};
+const deleteOtherRecord = async (id: string) => {
   console.log("削除対象ID", id);
 
   const { data, error } = await supabase
@@ -968,7 +992,7 @@ const filteredRecords = records.filter((record) => {
   </p>
 
   <button
-    onClick={() => deleteOtherRecord(record.id)}
+    onClick={() => deleteRecord(record.id)}
     className="text-red-400 hover:text-red-300"
   >
     🗑
