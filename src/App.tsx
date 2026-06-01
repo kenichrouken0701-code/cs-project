@@ -19,7 +19,7 @@ useState("分析待ち");
 const [todayIndustry, setTodayIndustry] =
 useState("分析待ち");
   console.log(import.meta.env.VITE_GEMINI_API_KEY);
-const [isAnalyzing, setIsAnalyzing] = useState(false);
+const [, setIsAnalyzing] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hookTab, setHookTab] = useState<"electric" | "hp" | "other">("electric");
@@ -43,7 +43,6 @@ const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scheduleNg, setScheduleNg] = useState("");
   const [memo, setMemo] = useState("");
   const [records, setRecords] = useState<any[]>([]);
-  const [analysisData, setAnalysisData] = useState<any[]>([]);
 const [otherApRecords, setOtherApRecords] = useState<any[]>([]);
 const [historyTab, setHistoryTab] = useState<
   "electric" | "hp" | "other"
@@ -104,57 +103,6 @@ const fetchOtherApRecords = async () => {
   setOtherApRecords(data || []);
 };
 
-const deleteHistory = async () => {
-  const ok = confirm("本当に全履歴を削除しますか？");
-
-  if (!ok) return;
-
-  const { error: coolError } = await supabase
-    .from("cool_records")
-    .delete()
-    .neq("id", "");
-
-  const { error: otherError } = await supabase
-    .from("other_ap_records")
-    .delete()
-    .neq("id", "");
-
-  if (coolError || otherError) {
-    alert("削除失敗");
-    console.error(coolError, otherError);
-    return;
-  }
-
-  fetchRecords();
-  fetchOtherApRecords();
-
-  alert("全履歴削除完了");
-
-};
-  const deleteRecord = async (id: string) => {
-  const ok = confirm("この履歴を削除しますか？");
-
-  if (!ok) return;
-
-  const { data, error } = await supabase
-    .from("cool_records")
-    .delete()
-    .eq("id", id)
-    .select();
-
-  console.log("削除結果", data);
-  console.log("削除エラー", error);
-
-  if (error) {
-    console.error(error);
-    alert(JSON.stringify(error));
-    return;
-  }
-
-  fetchRecords();
-
-  alert("削除完了");
-};
 const runGeminiAnalysis = async () => {
   alert("分析開始！");
   try {
@@ -493,7 +441,7 @@ if (strategyMatch) {
       .split("\n");
 
   const parsed = lines.map(
-    (line) => {
+    (line: string) => {
       const parts =
         line.split("|");
 
@@ -1020,7 +968,7 @@ const filteredRecords = records.filter((record) => {
   </p>
 
   <button
-    onClick={() => deleteRecord(record.id)}
+    onClick={() => deleteOtherRecord(record.id)}
     className="text-red-400 hover:text-red-300"
   >
     🗑
