@@ -109,19 +109,15 @@ const runGeminiAnalysis = async () => {
     setIsAnalyzing(true);
 
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
-        import.meta.env.VITE_GEMINI_API_KEY,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: `
+  "/api/gemini",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type":
+        "application/json",
+    },
+    body: JSON.stringify({
+      prompt: `
 あなたは日本トップクラスの営業マネージャーです。
 
 営業データを分析し、
@@ -384,16 +380,13 @@ STRATEGY_DATA_START
 18:00〜19:00|不動産|決裁率10%
 
 STRATEGY_DATA_END
-                  `,
-                },
-              ],
-            },
-          ],
-        }),
-      }
-    );
-alert("分析完了！");
-    const data = await response.json();
+`,
+    }),
+  }
+);
+
+const data =
+  await response.json();
 
     console.log(data);
 
