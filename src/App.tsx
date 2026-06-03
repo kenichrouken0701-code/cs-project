@@ -388,7 +388,13 @@ STRATEGY_DATA_END
 const data =
   await response.json();
 
-    console.log(data);
+  
+
+    console.log("↓↓↓↓ API RESPONSE ↓↓↓↓");
+console.log(data);
+
+console.log("↓↓↓↓ RESULT ↓↓↓↓");
+console.log(data.result);
 
     const result =
        data.result ||
