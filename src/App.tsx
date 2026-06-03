@@ -390,13 +390,9 @@ const data =
 
     console.log(data);
 
-    alert(
-  JSON.stringify(data, null, 2)
-);
-
     const result =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "分析結果取得失敗";
+       data.result ||
+  "分析結果取得失敗";
       const todayTimeMatch =
   result.match(/TODAY_TIME:\s*(.*)/);
 
@@ -456,9 +452,6 @@ if (strategyMatch) {
   } catch (error: any) {
   console.error(error);
 
-  alert(
-    JSON.stringify(error, null, 2)
-  );
 } finally {
     setIsAnalyzing(false);
   }
